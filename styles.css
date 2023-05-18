@@ -96,4 +96,19 @@ body {
   margin: 10px 0;
 }
 
+/* Media Queries */
 
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  #weather-cards {
+    width: 100%;
+  }
+
+  #weather-cards {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+}
