@@ -1,6 +1,7 @@
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const weatherCards = document.getElementById("weather-cards");
+const searchHistory = document.getElementById("search-history");
 
 const API_KEY = "7a1a91fdfda4d27709d7c20731555ec0";
 
@@ -67,5 +68,53 @@ function createWeatherCard(weather, cityName) {
   return card;
 }
 
+function saveSearchHistory(city) {
+  let cities = localStorage.getItem("searchHistory");
+  if (!cities) {
+    cities = [];
+  } else {
+    cities = JSON.parse(cities);
+  }
+
+  // Add the city to the search history array
+  cities.push(city);
+
+  // Limit the search history to the last 5 cities
+  if (cities.length > 5) {
+    cities.shift();
+  }
+
+  // Update the search history in localStorage
+  localStorage.setItem("searchHistory", JSON.stringify(cities));
+
+  // Display the search history
+  displaySearchHistory(cities);
+}
+
+function displaySearchHistory(cities) {
+  searchHistory.innerHTML = "";
+
+  for (let i = 0; i < cities.length; i++) {
+    const city = cities[i];
+    const historyItem = document.createElement("div");
+    historyItem.textContent = city;
+    searchHistory.appendChild(historyItem);
+  }
+}
+
+// Retrieve the search history from localStorage and display it
+const storedCities = localStorage.getItem("searchHistory");
+if (storedCities) {
+  const cities = JSON.parse(storedCities);
+  displaySearchHistory(cities);
+}
+
+// Add event listener to the search history container
+searchHistory.addEventListener("click", (event) => {
+  if (event.target.tagName === "DIV") {
+    const city = event.target.textContent;
+    getWeatherData(city);
+  }
+});
 
 
